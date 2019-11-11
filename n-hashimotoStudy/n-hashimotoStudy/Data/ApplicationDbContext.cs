@@ -15,6 +15,11 @@ namespace n_hashimotoStudy.Data
         {
         }
 
+        public DbSet<Busho> Bushoes { get; set; }
+        public DbSet<Kintai> Kintais { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Syain> Syains { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
