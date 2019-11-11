@@ -8,15 +8,17 @@ namespace n_hashimotoStudy.Models.AccountViewModels
 {
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "{0} を入力してください")]
         [EmailAddress]
+        [Display(Name = "メールアドレス")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "{0} を入力してください")]
         [DataType(DataType.Password)]
+        [Display(Name = "パスワード")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "このアカウントを記憶する")]
         public bool RememberMe { get; set; }
     }
 }

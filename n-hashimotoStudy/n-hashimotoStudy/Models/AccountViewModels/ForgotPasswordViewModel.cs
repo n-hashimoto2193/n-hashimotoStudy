@@ -10,6 +10,7 @@ namespace n_hashimotoStudy.Models.AccountViewModels
     {
         [Required]
         [EmailAddress]
+        [Display(Name = "メールアドレス")]
         public string Email { get; set; }
     }
 }

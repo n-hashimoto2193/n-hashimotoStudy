@@ -8,20 +8,28 @@ namespace n_hashimotoStudy.Models.AccountViewModels
 {
     public class RegisterViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "{0} を入力してください")]
+        [Display(Name = "社員番号")]
+        public string No { get; set; }
+
+        [Required(ErrorMessage = "{0} を入力してください")]
+        [Display(Name = "社員名")]
+        public string SyainName { get; set; }
+
+        [Required(ErrorMessage = "{0} を入力してください")]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "メールアドレス")]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessage = "{0} を入力してください")]
+        [StringLength(100, ErrorMessage = "{0} の長さは {2} 文字以上である必要があります。", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "パスワード")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "パスワードの確認入力")]
+        [Compare("Password", ErrorMessage = "パスワードと確認のパスワードが一致しません。")]
         public string ConfirmPassword { get; set; }
     }
 }
