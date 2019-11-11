@@ -1,0 +1,35 @@
+﻿@model IEnumerable<n_hashimotoStudy.Models.Busho>
+
+@{
+    ViewData["Title"] = "部署マスター";
+}
+
+<h2>部署マスター</h2>
+
+<p>
+    <a asp-action="Create">新規登録</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.BushoName)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BushoName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">修正</a> |
+                @*<a asp-action="Details" asp-route-id="@item.Id">Details</a> |*@
+                <a asp-action="Delete" asp-route-id="@item.Id">削除</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
