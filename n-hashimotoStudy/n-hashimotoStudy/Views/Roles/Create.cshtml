@@ -1,0 +1,30 @@
+﻿@model n_hashimotoStudy.Models.Role
+
+@{
+    ViewData["Title"] = "権限情報　登録";
+}
+
+<h2>権限情報　登録</h2>
+
+@*<h4>Role</h4>*@
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RoleName" class="control-label"></label>
+                <input asp-for="RoleName" class="form-control" />
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="登録" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">権限マスターに戻る</a>
+</div>
+
