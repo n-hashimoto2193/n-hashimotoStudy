@@ -8,12 +8,13 @@ using Microsoft.EntityFrameworkCore.Storage.Internal;
 using n_hashimotoStudy.Data;
 using System;
 
-namespace n_hashimotoStudy.Data.Migrations
+namespace nhashimotoStudy.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191117075135_1117role")]
+    partial class _1117role
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,14 +227,14 @@ namespace n_hashimotoStudy.Data.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<long?>("BushoId");
+                    b.Property<long>("BushoId");
 
                     b.Property<string>("Email")
                         .IsRequired();
 
                     b.Property<string>("No");
 
-                    b.Property<long?>("RoleId");
+                    b.Property<long>("RoleId");
 
                     b.Property<string>("SyainName")
                         .IsRequired();
@@ -303,11 +304,13 @@ namespace n_hashimotoStudy.Data.Migrations
                 {
                     b.HasOne("n_hashimotoStudy.Models.Busho", "Busho")
                         .WithMany("Syains")
-                        .HasForeignKey("BushoId");
+                        .HasForeignKey("BushoId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("n_hashimotoStudy.Models.Role", "Role")
                         .WithMany("Syains")
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -8,13 +8,12 @@ using Microsoft.EntityFrameworkCore.Storage.Internal;
 using n_hashimotoStudy.Data;
 using System;
 
-namespace n_hashimotoStudy.Data.Migrations
+namespace nhashimotoStudy.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191111073442_20191111_migration")]
-    partial class _20191111_migration
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -227,23 +226,24 @@ namespace n_hashimotoStudy.Data.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<long?>("BushoId");
+                    b.Property<long?>("BushoId1");
 
                     b.Property<string>("Email")
                         .IsRequired();
 
-                    b.Property<string>("No");
+                    b.Property<string>("No")
+                        .IsRequired();
 
-                    b.Property<long?>("RoleId");
+                    b.Property<long?>("RoleId1");
 
                     b.Property<string>("SyainName")
                         .IsRequired();
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BushoId");
+                    b.HasIndex("BushoId1");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("RoleId1");
 
                     b.ToTable("Syains");
                 });
@@ -304,11 +304,11 @@ namespace n_hashimotoStudy.Data.Migrations
                 {
                     b.HasOne("n_hashimotoStudy.Models.Busho", "Busho")
                         .WithMany("Syains")
-                        .HasForeignKey("BushoId");
+                        .HasForeignKey("BushoId1");
 
                     b.HasOne("n_hashimotoStudy.Models.Role", "Role")
                         .WithMany("Syains")
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId1");
                 });
 #pragma warning restore 612, 618
         }

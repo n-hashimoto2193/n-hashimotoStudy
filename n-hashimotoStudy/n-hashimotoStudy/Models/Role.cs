@@ -21,7 +21,7 @@ namespace n_hashimotoStudy.Models
         [Display(Name = "権限名")]
         public string RoleName { get; set; }
 
-        public ICollection<Syain> Syains { get; set; }
+        public virtual ICollection<Syain> Syains { get; set; }
 
     }
 }
