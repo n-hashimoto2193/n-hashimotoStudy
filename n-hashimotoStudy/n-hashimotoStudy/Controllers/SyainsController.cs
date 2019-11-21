@@ -152,6 +152,17 @@ namespace n_hashimotoStudy.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            // 部署リスト
+            var sections = _context.Bushoes
+                .Select(x => new { Id = x.Id, Value = x.BushoName });
+            ViewBag.BushoList = new SelectList(sections, "Id", "Value");
+
+            // 権限リスト
+            var kengens = _context.Roles
+                .Select(x => new { Id = x.Id, Value = x.RoleName });
+            ViewBag.RoleList = new SelectList(kengens, "Id", "Value");
+
             return View(syain);
         }
 
