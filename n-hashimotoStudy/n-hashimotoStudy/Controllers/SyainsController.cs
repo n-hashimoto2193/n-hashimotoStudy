@@ -103,6 +103,17 @@ namespace n_hashimotoStudy.Controllers
             {
                 return NotFound();
             }
+
+            // 部署リスト
+            var sections = _context.Bushoes
+                .Select(x => new { Id = x.Id, Value = x.BushoName });
+            ViewBag.BushoList = new SelectList(sections, "Id", "Value");
+
+            // 権限リスト
+            var kengens = _context.Roles
+                .Select(x => new { Id = x.Id, Value = x.RoleName });
+            ViewBag.RoleList = new SelectList(kengens, "Id", "Value");
+
             return View(syain);
         }
 
@@ -111,7 +122,7 @@ namespace n_hashimotoStudy.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,SyainName,No,Email")] Syain syain)
+        public async Task<IActionResult> Edit(long id, [Bind("Id,SyainName,No,Email, BushoId, RoleId")] Syain syain)
         {
             if (id != syain.Id)
             {
@@ -122,6 +133,9 @@ namespace n_hashimotoStudy.Controllers
             {
                 try
                 {
+                    syain.Busho = _context.Bushoes.Find(syain.BushoId);
+                    syain.Role = _context.Roles.Find(syain.RoleId);
+
                     _context.Update(syain);
                     await _context.SaveChangesAsync();
                 }
@@ -149,7 +163,7 @@ namespace n_hashimotoStudy.Controllers
                 return NotFound();
             }
 
-            var syain = await _context.Syains
+            var syain = await _context.Syains.Include(x => x.Busho).Include(x => x.Role)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (syain == null)
             {
