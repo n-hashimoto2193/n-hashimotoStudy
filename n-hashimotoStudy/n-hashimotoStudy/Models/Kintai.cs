@@ -19,7 +19,5 @@ namespace n_hashimotoStudy.Models
         /// </summary>
         public DateTime RecordingDate { get; set; }
 
-        public Syain Syain { get; set; }
-
     }
 }
