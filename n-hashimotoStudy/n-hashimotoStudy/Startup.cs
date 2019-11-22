@@ -35,12 +35,12 @@ namespace n_hashimotoStudy
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 // パスワード制限
-                // 「最低桁数5桁」のルールのみ
-                //options.Password.RequireDigit = false;  // 数字 [0-9] が含まれるべきか
-                options.Password.RequiredLength = 5;    // 最低限必要な文字数
-                //options.Password.RequireLowercase = false;  // アルファベット小文字 [a-z] が含まれるべきか
-                //options.Password.RequireNonAlphanumeric = false;    // 記号(=数字/アルファベット[0-9a-zA-Z]以外の文字)が含まれるべきか
-                //options.Password.RequireUppercase = false;  // アルファベット大文字 [A-Z] が含まれるべきか
+                //「最低桁数2桁」のルールのみ
+                options.Password.RequireDigit = false;  // 数字 [0-9] が含まれるべきか
+                options.Password.RequiredLength = 2;    // 最低限必要な文字数
+                options.Password.RequireLowercase = false;  // アルファベット小文字 [a-z] が含まれるべきか
+                options.Password.RequireNonAlphanumeric = false;    // 記号(=数字/アルファベット[0-9a-zA-Z]以外の文字)が含まれるべきか
+                options.Password.RequireUppercase = false;  // アルファベット大文字 [A-Z] が含まれるべきか
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();

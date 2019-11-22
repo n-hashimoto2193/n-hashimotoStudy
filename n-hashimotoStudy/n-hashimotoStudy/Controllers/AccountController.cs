@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using n_hashimotoStudy.Data;
 using n_hashimotoStudy.Models;
 using n_hashimotoStudy.Models.AccountViewModels;
 using n_hashimotoStudy.Services;
@@ -24,17 +25,20 @@ namespace n_hashimotoStudy.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly ApplicationDbContext _context;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _context = context;
         }
 
         [TempData]
@@ -220,10 +224,18 @@ namespace n_hashimotoStudy.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                // ログインIDをメールアドレスから社員番号に変更する
+                //var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, No = model.No, SyainName = model.SyainName};
+                var result = await _userManager.CreateAsync(user, model.No); // 初期パスワードは社員番号
                 if (result.Succeeded)
                 {
+                    user.No = model.No;
+                    user.SyainName = model.SyainName;
+                    user.Email = model.Email;
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

@@ -1,4 +1,4 @@
-﻿@model n_hashimotoStudy.Models.Syain
+﻿@model n_hashimotoStudy.Models.ApplicationUser
 
 @{
     ViewData["Title"] = "社員情報　登録";
@@ -9,8 +9,9 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="SyainName" class="control-label"></label>
                 <input asp-for="SyainName" class="form-control" />
@@ -28,7 +29,6 @@
             </div>
             <div class="form-group">
                 <label asp-for="BushoId" class="control-label"></label>
-                @*<input asp-for="Busho.BushoName" class="form-control" />*@
                 <select asp-for="BushoId" asp-items="ViewBag.BushoList" class="form-control">
                     <option value="">選択してください</option>
                 </select>
@@ -36,16 +36,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="RoleId" class="control-label"></label>
-                @*<input asp-for="Busho.BushoName" class="form-control" />*@
                 <select asp-for="RoleId" asp-items="ViewBag.RoleList" class="form-control">
                     <option value="">選択してください</option>
                 </select>
                 <span asp-validation-for="RoleId" class="text-danger"></span>
             </div>
 
-
             <div class="form-group">
-                <input type="submit" value="登録" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </form>
     </div>

@@ -1,4 +1,4 @@
-﻿@model n_hashimotoStudy.Models.Syain
+﻿@model n_hashimotoStudy.Models.ApplicationUser
 
 @{
     ViewData["Title"] = "社員情報　削除";
@@ -42,7 +42,7 @@
 
 
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="削除" class="btn btn-default" /> |

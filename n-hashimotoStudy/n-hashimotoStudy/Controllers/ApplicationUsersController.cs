@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,40 +11,48 @@ using n_hashimotoStudy.Models;
 
 namespace n_hashimotoStudy.Controllers
 {
-    public class SyainsController : Controller
+    public class ApplicationUsersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public SyainsController(ApplicationDbContext context)
+
+        public ApplicationUsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        // GET: Syains
+        /// <summary>
+        /// コンストラクター
+        /// </summary>
+        /// <param name="context"></param>
+        // GET: ApplicationUsers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Syains.Include(x => x.Busho).Include(x => x.Role).ToListAsync());
+            return View(await _context.ApplicationUsers.Include(x => x.Busho).Include(x => x.Role).ToListAsync());
         }
 
-        // GET: Syains/Details/5
-        public async Task<IActionResult> Details(long? id)
+        // GET: ApplicationUsers/Details/5
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var syain = await _context.Syains
+            var ApplicationUser = await _context.ApplicationUsers
+                .Include(x => x.Busho).Include(x => x.Role)
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (syain == null)
+            if (ApplicationUser == null)
             {
                 return NotFound();
             }
 
-            return View(syain);
+            return View(ApplicationUser);
         }
 
-        // GET: Syains/Create
+        // GET: ApplicationUsers/Create
         public IActionResult Create()
         {
             // 部署リスト
@@ -59,19 +68,37 @@ namespace n_hashimotoStudy.Controllers
             return View();
         }
 
-        // POST: Syains/Create
+        // POST: ApplicationUsers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,SyainName,No,Email, BushoId, RoleId")] Syain syain)
+        public async Task<IActionResult> Create([Bind("Id,SyainName,No,Email, BushoId, RoleId")] ApplicationUser applicationUser)
         {
             if (ModelState.IsValid)
             {
-                syain.Busho = _context.Bushoes.Find(syain.BushoId);
-                syain.Role = _context.Roles.Find(syain.RoleId);
+                var user = new ApplicationUser
+                {
+                    UserName = applicationUser.Email,
+                    Email = applicationUser.Email,
+                    No = applicationUser.No,
+                    SyainName = applicationUser.SyainName
+                };
 
-                _context.Add(syain);
+                // ASP.Net.Identityのユーザー登録機構を利用する
+                var result = await _userManager.CreateAsync(user, applicationUser.No); // 初期パスワードは社員番号
+
+                if (!result.Succeeded)
+                {
+                    Exception ex = new Exception(result.Errors.ToString());
+                    // LoggingExtension.WriteExceptionLog(ex);
+                    throw ex;
+                }
+
+                user.Busho = _context.Bushoes.SingleOrDefault(p => p.Id == applicationUser.BushoId);
+                user.Role = _context.Roles.SingleOrDefault(p => p.Id == applicationUser.RoleId);
+                _context.Update(user);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -87,19 +114,20 @@ namespace n_hashimotoStudy.Controllers
             ViewBag.RoleList = new SelectList(kengens, "Id", "Value");
 
 
-            return View(syain);
+            return View(applicationUser);
         }
 
-        // GET: Syains/Edit/5
-        public async Task<IActionResult> Edit(long? id)
+        // GET: ApplicationUsers/Edit/5
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var syain = await _context.Syains.SingleOrDefaultAsync(m => m.Id == id);
-            if (syain == null)
+            //var ApplicationUser = await _context.ApplicationUsers.SingleOrDefaultAsync(m => m.Id == id);
+            var ApplicationUser = await _context.ApplicationUsers.Where(m => m.Id == id).Include(m => m.Busho).Include(m => m.Role).SingleOrDefaultAsync();
+            if (ApplicationUser == null)
             {
                 return NotFound();
             }
@@ -114,17 +142,17 @@ namespace n_hashimotoStudy.Controllers
                 .Select(x => new { Id = x.Id, Value = x.RoleName });
             ViewBag.RoleList = new SelectList(kengens, "Id", "Value");
 
-            return View(syain);
+            return View(ApplicationUser);
         }
 
-        // POST: Syains/Edit/5
+        // POST: ApplicationUsers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,SyainName,No,Email, BushoId, RoleId")] Syain syain)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,SyainName,No,Email, BushoId, RoleId")] ApplicationUser applicationUser)
         {
-            if (id != syain.Id)
+            if (id != applicationUser.Id)
             {
                 return NotFound();
             }
@@ -133,15 +161,19 @@ namespace n_hashimotoStudy.Controllers
             {
                 try
                 {
-                    syain.Busho = _context.Bushoes.Find(syain.BushoId);
-                    syain.Role = _context.Roles.Find(syain.RoleId);
+                    var user = _context.ApplicationUsers.Where(t => t.Id == applicationUser.Id).FirstOrDefault();
+                    user.UserName = applicationUser.Email;
+                    user.Email = applicationUser.Email;
+                    user.No = applicationUser.No;
+                    user.SyainName = applicationUser.SyainName;
+                    user.Busho = _context.Bushoes.SingleOrDefault(p => p.Id == applicationUser.BushoId);
+                    user.Role = _context.Roles.SingleOrDefault(p => p.Id == applicationUser.RoleId);
 
-                    _context.Update(syain);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)
                 {
-                    if (!SyainExists(syain.Id))
+                    if (!ApplicationUserExists(applicationUser.Id))
                     {
                         return NotFound();
                     }
@@ -163,41 +195,42 @@ namespace n_hashimotoStudy.Controllers
                 .Select(x => new { Id = x.Id, Value = x.RoleName });
             ViewBag.RoleList = new SelectList(kengens, "Id", "Value");
 
-            return View(syain);
+            return View(applicationUser);
         }
 
-        // GET: Syains/Delete/5
-        public async Task<IActionResult> Delete(long? id)
+        // GET: ApplicationUsers/Delete/5
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var syain = await _context.Syains.Include(x => x.Busho).Include(x => x.Role)
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (syain == null)
+            var ApplicationUser = await _context.ApplicationUsers
+                .Where(m => m.Id == id).Include(m => m.Busho).Include(m => m.Role)
+                .SingleOrDefaultAsync();
+            if (ApplicationUser == null)
             {
                 return NotFound();
             }
 
-            return View(syain);
+            return View(ApplicationUser);
         }
 
-        // POST: Syains/Delete/5
+        // POST: ApplicationUsers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var syain = await _context.Syains.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Syains.Remove(syain);
+            var syain = await _context.ApplicationUsers.SingleOrDefaultAsync(m => m.Id == id);
+            _context.ApplicationUsers.Remove(syain);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SyainExists(long id)
+        private bool ApplicationUserExists(string id)
         {
-            return _context.Syains.Any(e => e.Id == id);
+            return _context.ApplicationUsers.Any(e => e.Id == id);
         }
     }
 }
