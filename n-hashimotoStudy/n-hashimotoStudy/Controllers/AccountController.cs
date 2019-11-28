@@ -467,7 +467,8 @@ namespace n_hashimotoStudy.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                //return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(KintaiController.Index), "Kintai");
             }
         }
 
