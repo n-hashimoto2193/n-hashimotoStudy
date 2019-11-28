@@ -226,11 +226,11 @@ namespace n_hashimotoStudy.Controllers
             {
                 // ログインIDをメールアドレスから社員番号に変更する
                 //var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, No = model.No, SyainName = model.SyainName};
-                var result = await _userManager.CreateAsync(user, model.No); // 初期パスワードは社員番号
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, SyainNo = model.SyainNo, SyainName = model.SyainName};
+                var result = await _userManager.CreateAsync(user, model.SyainNo); // 初期パスワードは社員番号
                 if (result.Succeeded)
                 {
-                    user.No = model.No;
+                    user.SyainNo = model.SyainNo;
                     user.SyainName = model.SyainName;
                     user.Email = model.Email;
                     _context.Update(user);

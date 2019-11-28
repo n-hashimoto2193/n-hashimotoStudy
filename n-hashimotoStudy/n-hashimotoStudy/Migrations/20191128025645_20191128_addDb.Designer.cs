@@ -10,8 +10,8 @@ using n_hashimotoStudy.Data;
 namespace nhashimotoStudy.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191121072819_20191121_addDb")]
-    partial class _20191121_addDb
+    [Migration("20191128025645_20191128_addDb")]
+    partial class _20191128_addDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -135,10 +135,13 @@ namespace nhashimotoStudy.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<long?>("BushoId1");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
@@ -159,7 +162,16 @@ namespace nhashimotoStudy.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<long?>("RoleId1");
+
                     b.Property<string>("SecurityStamp");
+
+                    b.Property<string>("SyainName")
+                        .IsRequired();
+
+                    b.Property<string>("SyainNo")
+                        .IsRequired()
+                        .HasMaxLength(4);
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -168,12 +180,16 @@ namespace nhashimotoStudy.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BushoId1");
+
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasName("UserNameIndex");
+
+                    b.HasIndex("RoleId1");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -196,13 +212,13 @@ namespace nhashimotoStudy.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("RecordingDate");
+                    b.Property<string>("ApplicationUserId");
 
-                    b.Property<long?>("SyainId");
+                    b.Property<DateTime>("RecordingDate");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SyainId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Kintais");
                 });
@@ -218,33 +234,6 @@ namespace nhashimotoStudy.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("n_hashimotoStudy.Models.Syain", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<long?>("BushoId1");
-
-                    b.Property<string>("Email")
-                        .IsRequired();
-
-                    b.Property<string>("No")
-                        .IsRequired();
-
-                    b.Property<long?>("RoleId1");
-
-                    b.Property<string>("SyainName")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BushoId1");
-
-                    b.HasIndex("RoleId1");
-
-                    b.ToTable("Syains");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -292,22 +281,22 @@ namespace nhashimotoStudy.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("n_hashimotoStudy.Models.Kintai", b =>
-                {
-                    b.HasOne("n_hashimotoStudy.Models.Syain", "Syain")
-                        .WithMany()
-                        .HasForeignKey("SyainId");
-                });
-
-            modelBuilder.Entity("n_hashimotoStudy.Models.Syain", b =>
+            modelBuilder.Entity("n_hashimotoStudy.Models.ApplicationUser", b =>
                 {
                     b.HasOne("n_hashimotoStudy.Models.Busho", "Busho")
-                        .WithMany("Syains")
+                        .WithMany()
                         .HasForeignKey("BushoId1");
 
                     b.HasOne("n_hashimotoStudy.Models.Role", "Role")
-                        .WithMany("Syains")
+                        .WithMany()
                         .HasForeignKey("RoleId1");
+                });
+
+            modelBuilder.Entity("n_hashimotoStudy.Models.Kintai", b =>
+                {
+                    b.HasOne("n_hashimotoStudy.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
                 });
 #pragma warning restore 612, 618
         }

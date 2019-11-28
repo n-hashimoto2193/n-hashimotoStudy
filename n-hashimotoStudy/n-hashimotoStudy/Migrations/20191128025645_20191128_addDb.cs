@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace nhashimotoStudy.Migrations
 {
-    public partial class _20191121_addDb : Migration
+    public partial class _20191128_addDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,31 +20,6 @@ namespace nhashimotoStudy.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,6 +67,47 @@ namespace nhashimotoStudy.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    SyainName = table.Column<string>(nullable: false),
+                    SyainNo = table.Column<string>(maxLength: 4, nullable: false),
+                    Email = table.Column<string>(maxLength: 256, nullable: false),
+                    BushoId1 = table.Column<long>(nullable: true),
+                    RoleId1 = table.Column<long>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Bushoes_BushoId1",
+                        column: x => x.BushoId1,
+                        principalTable: "Bushoes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Roles_RoleId1",
+                        column: x => x.RoleId1,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -180,50 +196,21 @@ namespace nhashimotoStudy.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Syains",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    SyainName = table.Column<string>(nullable: false),
-                    No = table.Column<string>(nullable: false),
-                    Email = table.Column<string>(nullable: false),
-                    BushoId1 = table.Column<long>(nullable: true),
-                    RoleId1 = table.Column<long>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Syains", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Syains_Bushoes_BushoId1",
-                        column: x => x.BushoId1,
-                        principalTable: "Bushoes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Syains_Roles_RoleId1",
-                        column: x => x.RoleId1,
-                        principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Kintais",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     RecordingDate = table.Column<DateTime>(nullable: false),
-                    SyainId = table.Column<long>(nullable: true)
+                    ApplicationUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Kintais", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Kintais_Syains_SyainId",
-                        column: x => x.SyainId,
-                        principalTable: "Syains",
+                        name: "FK_Kintais_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -255,6 +242,11 @@ namespace nhashimotoStudy.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_BushoId1",
+                table: "AspNetUsers",
+                column: "BushoId1");
+
+            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
@@ -266,19 +258,14 @@ namespace nhashimotoStudy.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Kintais_SyainId",
-                table: "Kintais",
-                column: "SyainId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Syains_BushoId1",
-                table: "Syains",
-                column: "BushoId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Syains_RoleId1",
-                table: "Syains",
+                name: "IX_AspNetUsers_RoleId1",
+                table: "AspNetUsers",
                 column: "RoleId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Kintais_ApplicationUserId",
+                table: "Kintais",
+                column: "ApplicationUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -306,9 +293,6 @@ namespace nhashimotoStudy.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Syains");
 
             migrationBuilder.DropTable(
                 name: "Bushoes");

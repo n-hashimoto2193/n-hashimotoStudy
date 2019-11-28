@@ -148,9 +148,6 @@ namespace nhashimotoStudy.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
-                    b.Property<string>("No")
-                        .IsRequired();
-
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
 
@@ -169,6 +166,10 @@ namespace nhashimotoStudy.Migrations
 
                     b.Property<string>("SyainName")
                         .IsRequired();
+
+                    b.Property<string>("SyainNo")
+                        .IsRequired()
+                        .HasMaxLength(4);
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -209,9 +210,13 @@ namespace nhashimotoStudy.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ApplicationUserId");
+
                     b.Property<DateTime>("RecordingDate");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Kintais");
                 });
@@ -283,6 +288,13 @@ namespace nhashimotoStudy.Migrations
                     b.HasOne("n_hashimotoStudy.Models.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId1");
+                });
+
+            modelBuilder.Entity("n_hashimotoStudy.Models.Kintai", b =>
+                {
+                    b.HasOne("n_hashimotoStudy.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
                 });
 #pragma warning restore 612, 618
         }

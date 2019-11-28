@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
-
+using Microsoft.AspNetCore.Mvc;
 
 namespace n_hashimotoStudy.Models
 {
@@ -25,8 +25,10 @@ namespace n_hashimotoStudy.Models
         public string SyainName { get; set; }
 
         [Required(ErrorMessage = "{0} を入力してください")]
+        [StringLength(4, ErrorMessage = "社員番号は4桁で入力してください。")]
+        [Remote("NoUniqueCheck", "ApplicationUsers", ErrorMessage = "同一の社員番号を持つユーザーが存在するため設定できません。")]
         [Display(Name = "社員番号")]
-        public string No { get; set; }
+        public string SyainNo { get; set; }
 
         [Required(ErrorMessage = "{0} を入力してください")]
         [EmailAddress]

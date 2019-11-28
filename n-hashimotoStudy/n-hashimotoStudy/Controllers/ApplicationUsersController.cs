@@ -73,7 +73,7 @@ namespace n_hashimotoStudy.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,SyainName,No,Email, BushoId, RoleId")] ApplicationUser applicationUser)
+        public async Task<IActionResult> Create([Bind("Id,SyainName,SyainNo,Email, BushoId, RoleId")] ApplicationUser applicationUser)
         {
             if (ModelState.IsValid)
             {
@@ -81,12 +81,12 @@ namespace n_hashimotoStudy.Controllers
                 {
                     UserName = applicationUser.Email,
                     Email = applicationUser.Email,
-                    No = applicationUser.No,
+                    SyainNo = applicationUser.SyainNo,
                     SyainName = applicationUser.SyainName
                 };
 
                 // ASP.Net.Identityのユーザー登録機構を利用する
-                var result = await _userManager.CreateAsync(user, applicationUser.No); // 初期パスワードは社員番号
+                var result = await _userManager.CreateAsync(user, applicationUser.SyainNo); // 初期パスワードは社員番号
 
                 if (!result.Succeeded)
                 {
@@ -150,7 +150,7 @@ namespace n_hashimotoStudy.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,SyainName,No,Email, BushoId, RoleId")] ApplicationUser applicationUser)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,SyainName,SyainNo,Email, BushoId, RoleId")] ApplicationUser applicationUser)
         {
             if (id != applicationUser.Id)
             {
@@ -164,7 +164,7 @@ namespace n_hashimotoStudy.Controllers
                     var user = _context.ApplicationUsers.Where(t => t.Id == applicationUser.Id).FirstOrDefault();
                     user.UserName = applicationUser.Email;
                     user.Email = applicationUser.Email;
-                    user.No = applicationUser.No;
+                    user.SyainNo = applicationUser.SyainNo;
                     user.SyainName = applicationUser.SyainName;
                     user.Busho = _context.Bushoes.SingleOrDefault(p => p.Id == applicationUser.BushoId);
                     user.Role = _context.Roles.SingleOrDefault(p => p.Id == applicationUser.RoleId);
@@ -232,5 +232,18 @@ namespace n_hashimotoStudy.Controllers
         {
             return _context.ApplicationUsers.Any(e => e.Id == id);
         }
+
+        /// <summary>
+        /// 社員番号の一意性チェック
+        /// </summary>
+        /// <param name="No"></param>
+        /// <returns></returns>
+        [AcceptVerbs("Get", "Post")]
+        public IActionResult NoUniqueCheck(string SyainNo)
+        {
+            var ret = _context.ApplicationUsers.Any(e => e.SyainNo == SyainNo);
+            return Json(!ret);
+        }
+
     }
 }

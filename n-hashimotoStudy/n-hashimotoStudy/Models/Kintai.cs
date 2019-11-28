@@ -19,5 +19,7 @@ namespace n_hashimotoStudy.Models
         /// </summary>
         public DateTime RecordingDate { get; set; }
 
+        public virtual ApplicationUser ApplicationUser { get; set; }
+
     }
 }
