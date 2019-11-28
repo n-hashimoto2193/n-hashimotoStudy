@@ -21,5 +21,6 @@ namespace n_hashimotoStudy.Models
         [Display(Name = "部署名")]
         public string BushoName { get; set; }
 
+        public virtual ICollection<ApplicationUser> ApplicationUsers { get; set; }
     }
 }

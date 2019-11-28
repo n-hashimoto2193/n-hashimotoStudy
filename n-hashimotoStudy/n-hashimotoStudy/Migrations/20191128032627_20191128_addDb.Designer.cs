@@ -10,7 +10,7 @@ using n_hashimotoStudy.Data;
 namespace nhashimotoStudy.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191128025645_20191128_addDb")]
+    [Migration("20191128032627_20191128_addDb")]
     partial class _20191128_addDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -135,7 +135,7 @@ namespace nhashimotoStudy.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<long?>("BushoId1");
+                    b.Property<long?>("BushoId");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -162,7 +162,7 @@ namespace nhashimotoStudy.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<long?>("RoleId1");
+                    b.Property<long?>("RoleId");
 
                     b.Property<string>("SecurityStamp");
 
@@ -180,7 +180,7 @@ namespace nhashimotoStudy.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BushoId1");
+                    b.HasIndex("BushoId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -189,7 +189,7 @@ namespace nhashimotoStudy.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex");
 
-                    b.HasIndex("RoleId1");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -285,11 +285,11 @@ namespace nhashimotoStudy.Migrations
                 {
                     b.HasOne("n_hashimotoStudy.Models.Busho", "Busho")
                         .WithMany()
-                        .HasForeignKey("BushoId1");
+                        .HasForeignKey("BushoId");
 
                     b.HasOne("n_hashimotoStudy.Models.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId1");
+                        .HasForeignKey("RoleId");
                 });
 
             modelBuilder.Entity("n_hashimotoStudy.Models.Kintai", b =>

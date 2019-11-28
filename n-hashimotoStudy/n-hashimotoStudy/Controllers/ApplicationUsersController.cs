@@ -73,7 +73,7 @@ namespace n_hashimotoStudy.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,SyainName,SyainNo,Email, BushoId, RoleId")] ApplicationUser applicationUser)
+        public async Task<IActionResult> Create([Bind("Id,SyainName,SyainNo,Email, BelongBusho, HasRole")] ApplicationUser applicationUser)
         {
             if (ModelState.IsValid)
             {
@@ -95,8 +95,8 @@ namespace n_hashimotoStudy.Controllers
                     throw ex;
                 }
 
-                user.Busho = _context.Bushoes.SingleOrDefault(p => p.Id == applicationUser.BushoId);
-                user.Role = _context.Roles.SingleOrDefault(p => p.Id == applicationUser.RoleId);
+                user.Busho = _context.Bushoes.SingleOrDefault(p => p.Id == applicationUser.BelongBusho);
+                user.Role = _context.Roles.SingleOrDefault(p => p.Id == applicationUser.HasRole);
                 _context.Update(user);
 
                 await _context.SaveChangesAsync();
@@ -150,7 +150,7 @@ namespace n_hashimotoStudy.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,SyainName,SyainNo,Email, BushoId, RoleId")] ApplicationUser applicationUser)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,SyainName,SyainNo,Email, BelongBusho, HasRole")] ApplicationUser applicationUser)
         {
             if (id != applicationUser.Id)
             {
@@ -166,8 +166,8 @@ namespace n_hashimotoStudy.Controllers
                     user.Email = applicationUser.Email;
                     user.SyainNo = applicationUser.SyainNo;
                     user.SyainName = applicationUser.SyainName;
-                    user.Busho = _context.Bushoes.SingleOrDefault(p => p.Id == applicationUser.BushoId);
-                    user.Role = _context.Roles.SingleOrDefault(p => p.Id == applicationUser.RoleId);
+                    user.Busho = _context.Bushoes.SingleOrDefault(p => p.Id == applicationUser.BelongBusho);
+                    user.Role = _context.Roles.SingleOrDefault(p => p.Id == applicationUser.HasRole);
 
                     await _context.SaveChangesAsync();
                 }

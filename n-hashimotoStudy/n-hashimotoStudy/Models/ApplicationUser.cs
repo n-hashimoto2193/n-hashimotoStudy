@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -38,17 +39,18 @@ namespace n_hashimotoStudy.Models
         [NotMapped]
         [Required(ErrorMessage = "{0} を選択してください")]
         [Display(Name = "所属部署")]
-        public long BushoId { get; set; }
+        public long BelongBusho { get; set; }
 
         [NotMapped]
         //[Required(ErrorMessage = "{0} を選択してください")]
         [Display(Name = "権限")]
-        public long RoleId { get; set; }
+        public long HasRole { get; set; }
 
         public virtual Busho Busho { get; set; }
 
         public virtual Role Role { get; set; }
 
+        public virtual ICollection<Kintai> Kintais { get; set; }
 
 
     }

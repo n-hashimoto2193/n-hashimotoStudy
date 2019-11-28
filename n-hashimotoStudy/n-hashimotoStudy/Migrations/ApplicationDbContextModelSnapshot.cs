@@ -133,7 +133,7 @@ namespace nhashimotoStudy.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<long?>("BushoId1");
+                    b.Property<long?>("BushoId");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -160,7 +160,7 @@ namespace nhashimotoStudy.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<long?>("RoleId1");
+                    b.Property<long?>("RoleId");
 
                     b.Property<string>("SecurityStamp");
 
@@ -178,7 +178,7 @@ namespace nhashimotoStudy.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BushoId1");
+                    b.HasIndex("BushoId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -187,7 +187,7 @@ namespace nhashimotoStudy.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex");
 
-                    b.HasIndex("RoleId1");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -282,18 +282,18 @@ namespace nhashimotoStudy.Migrations
             modelBuilder.Entity("n_hashimotoStudy.Models.ApplicationUser", b =>
                 {
                     b.HasOne("n_hashimotoStudy.Models.Busho", "Busho")
-                        .WithMany()
-                        .HasForeignKey("BushoId1");
+                        .WithMany("ApplicationUsers")
+                        .HasForeignKey("BushoId");
 
                     b.HasOne("n_hashimotoStudy.Models.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId1");
+                        .WithMany("ApplicationUsers")
+                        .HasForeignKey("RoleId");
                 });
 
             modelBuilder.Entity("n_hashimotoStudy.Models.Kintai", b =>
                 {
                     b.HasOne("n_hashimotoStudy.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
+                        .WithMany("Kintais")
                         .HasForeignKey("ApplicationUserId");
                 });
 #pragma warning restore 612, 618

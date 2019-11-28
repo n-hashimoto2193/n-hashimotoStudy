@@ -90,21 +90,21 @@ namespace nhashimotoStudy.Migrations
                     SyainName = table.Column<string>(nullable: false),
                     SyainNo = table.Column<string>(maxLength: 4, nullable: false),
                     Email = table.Column<string>(maxLength: 256, nullable: false),
-                    BushoId1 = table.Column<long>(nullable: true),
-                    RoleId1 = table.Column<long>(nullable: true)
+                    BushoId = table.Column<long>(nullable: true),
+                    RoleId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_Bushoes_BushoId1",
-                        column: x => x.BushoId1,
+                        name: "FK_AspNetUsers_Bushoes_BushoId",
+                        column: x => x.BushoId,
                         principalTable: "Bushoes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_Roles_RoleId1",
-                        column: x => x.RoleId1,
+                        name: "FK_AspNetUsers_Roles_RoleId",
+                        column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -242,9 +242,9 @@ namespace nhashimotoStudy.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_BushoId1",
+                name: "IX_AspNetUsers_BushoId",
                 table: "AspNetUsers",
-                column: "BushoId1");
+                column: "BushoId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
@@ -258,9 +258,9 @@ namespace nhashimotoStudy.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_RoleId1",
+                name: "IX_AspNetUsers_RoleId",
                 table: "AspNetUsers",
-                column: "RoleId1");
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Kintais_ApplicationUserId",

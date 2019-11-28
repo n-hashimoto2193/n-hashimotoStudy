@@ -28,18 +28,18 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BushoId" class="control-label"></label>
-                <select asp-for="BushoId" asp-items="ViewBag.BushoList" class="form-control">
+                <label asp-for="BelongBusho" class="control-label"></label>
+                <select asp-for="BelongBusho" asp-items="ViewBag.BushoList" class="form-control">
                     <option value="">選択してください</option>
                 </select>
-                <span asp-validation-for="BushoId" class="text-danger"></span>
+                <span asp-validation-for="BelongBusho" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RoleId" class="control-label"></label>
-                <select asp-for="RoleId" asp-items="ViewBag.RoleList" class="form-control">
+                <label asp-for="HasRole" class="control-label"></label>
+                <select asp-for="HasRole" asp-items="ViewBag.RoleList" class="form-control">
                     <option value="">選択してください</option>
                 </select>
-                <span asp-validation-for="RoleId" class="text-danger"></span>
+                <span asp-validation-for="HasRole" class="text-danger"></span>
             </div>
 
             <div class="form-group">
