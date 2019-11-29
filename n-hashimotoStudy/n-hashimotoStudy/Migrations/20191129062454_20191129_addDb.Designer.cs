@@ -10,8 +10,8 @@ using n_hashimotoStudy.Data;
 namespace nhashimotoStudy.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191128080451_20191128_addDb")]
-    partial class _20191128_addDb
+    [Migration("20191129062454_20191129_addDb")]
+    partial class _20191129_addDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

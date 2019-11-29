@@ -1,4 +1,4 @@
-﻿@model n_hashimotoStudy.Models.Kintai
+﻿@model n_hashimotoStudy.Models.ViewModels.KintaiViewModel
 
 @{
     ViewData["Title"] = "勤怠管理";
@@ -8,11 +8,25 @@
 
 <div>
     <div class="row">
+        <div class="col-md-4 text-left">
+            <h1>@ViewBag.datetime</h1>
+        </div>
         <form asp-action="Rec" method="post">
-
-            <div class="form-group col-md-12">
-                <button type="submit" class="btn btn-danger btn-lg col-md-offset-2 col-md-3">記録</button>
+            <div class="form-group form-inline col-md-12">
+                <h1><label asp-for="TimeIn" class="col-md-3 text-right"></label></h1>
+                <button type="submit" class="btn btn-primary btn-lg col-md-offset-1 col-md-2">記録</button>
+                <h1><label class="col-md-4 text-right"></label></h1>
+                <span asp-validation-for="TimeIn" class="text-danger col-md-4"></span>
             </div>
         </form>
+        <form asp-action="Rec" method="post">
+            <div class="form-group form-inline col-md-12">
+                <h1><label asp-for="TimeOut" class="col-md-3 text-right"></label></h1>
+                <button type="submit" class="btn btn-danger btn-lg col-md-offset-1 col-md-2">記録</button>
+                <h1><label class="col-md-2 text-right"></label></h1>
+                <span asp-validation-for="TimeOut" class="text-danger col-md-4"></span>
+            </div>
+        </form>
+
     </div>
 </div>
