@@ -10,7 +10,7 @@ using n_hashimotoStudy.Data;
 namespace nhashimotoStudy.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191128032627_20191128_addDb")]
+    [Migration("20191128080451_20191128_addDb")]
     partial class _20191128_addDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -284,18 +284,18 @@ namespace nhashimotoStudy.Migrations
             modelBuilder.Entity("n_hashimotoStudy.Models.ApplicationUser", b =>
                 {
                     b.HasOne("n_hashimotoStudy.Models.Busho", "Busho")
-                        .WithMany()
+                        .WithMany("ApplicationUsers")
                         .HasForeignKey("BushoId");
 
                     b.HasOne("n_hashimotoStudy.Models.Role", "Role")
-                        .WithMany()
+                        .WithMany("ApplicationUsers")
                         .HasForeignKey("RoleId");
                 });
 
             modelBuilder.Entity("n_hashimotoStudy.Models.Kintai", b =>
                 {
                     b.HasOne("n_hashimotoStudy.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
+                        .WithMany("Kintais")
                         .HasForeignKey("ApplicationUserId");
                 });
 #pragma warning restore 612, 618
