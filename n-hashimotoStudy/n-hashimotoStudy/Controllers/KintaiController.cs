@@ -8,21 +8,31 @@ using Microsoft.EntityFrameworkCore;
 using n_hashimotoStudy.Data;
 using n_hashimotoStudy.Models;
 using n_hashimotoStudy.Models.ViewModels;
+using n_hashimotoStudy.Services;
 
 namespace n_hashimotoStudy.Controllers
 {
     public class KintaiController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private KintaiServices _services;
 
         public KintaiController(ApplicationDbContext context)
         {
+            _services = new KintaiServices();
             _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            // ユーザー情報を取得
+            var user = _context.ApplicationUsers.Where(t => t.UserName == User.Identity.Name)
+                .FirstOrDefault();
+            KintaiViewModel model = new KintaiViewModel();
+
+            // 打刻データを表示
+            _services.RecData(model, _context, user);
+            return View(model);
         }
 
 
@@ -54,6 +64,7 @@ namespace n_hashimotoStudy.Controllers
                         // ユーザーをセット
                         model.ApplicationUser = user;
 
+                        // viewModelに値を渡す
                         viewModel.TimeIn = model.RecordingDate.ToString("HH:mm");
                         // DBに追加
                         _context.Add(model);
