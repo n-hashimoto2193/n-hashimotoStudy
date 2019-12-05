@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using n_hashimotoStudy.Data;
@@ -21,15 +22,11 @@ namespace n_hashimotoStudy.Controllers
 
         public IActionResult Index()
         {
-            System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Start();
-            // 現在時を取得
-            DateTime datetime = DateTime.Now;
-            ViewBag.datetime = datetime;
             return View();
         }
 
 
+        // TODO: 打刻時間を表示
         /// <summary>
         /// 時刻記録
         /// </summary>
@@ -57,7 +54,7 @@ namespace n_hashimotoStudy.Controllers
                         // ユーザーをセット
                         model.ApplicationUser = user;
 
-
+                        viewModel.TimeIn = model.RecordingDate.ToString("HH:mm");
                         // DBに追加
                         _context.Add(model);
                         // データベースに変更が反映
@@ -66,7 +63,8 @@ namespace n_hashimotoStudy.Controllers
                         transaction.Commit();
 
                         // 勤怠管理画面に戻る
-                        return RedirectToAction(nameof (Index));
+                        //return RedirectToAction(nameof(Index));
+                        return View("Index", viewModel);
 
                     }
                     catch (Exception ex)

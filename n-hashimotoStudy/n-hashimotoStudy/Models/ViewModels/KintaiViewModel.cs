@@ -12,7 +12,7 @@ namespace n_hashimotoStudy.Models.ViewModels
         /// 出勤時刻
         /// </summary>
         [Display(Name = "出勤時刻")]
-        public DateTime TimeIn { get; set; }
+        public string TimeIn { get; set; }
 
         /// <summary>
         /// 退出時刻
