@@ -18,7 +18,7 @@ namespace n_hashimotoStudy.Models.ViewModels
         /// 退出時刻
         /// </summary>
         [Display(Name = "退出時刻")]
-        public DateTime TimeOut { get; set; }
+        public string TimeOut { get; set; }
 
     }
 }
